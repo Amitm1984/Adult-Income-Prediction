@@ -233,9 +233,11 @@ Possible enhancements include:
 ---
 
 ## Screenshots
+<img width="808" height="395" alt="image" src="https://github.com/user-attachments/assets/94dd075e-fba0-4138-ac5a-64ef46219b57" />
 
 ### Homepage
 
+<img width="808" height="395" alt="image" src="https://github.com/user-attachments/assets/995a3f11-6d8b-4d53-b8ae-59a8bf17615a" />
 
 ![EDA](assets/home.png)
 
