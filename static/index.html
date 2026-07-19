@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Adult Income Prediction</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#4facfe,#00f2fe);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:40px;
+}
+
+.container{
+
+    width:95%;
+    max-width:1400px;
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:35px;
+
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
+
+}
+
+h1{
+
+    text-align:center;
+    color:#0b4d91;
+    margin-bottom:8px;
+
+}
+
+.subtitle{
+
+    text-align:center;
+
+    color:#555;
+
+    margin-bottom:35px;
+
+}
+
+.form-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(5,1fr);
+
+    gap:20px;
+
+}
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+label{
+
+    margin-bottom:8px;
+
+    font-weight:600;
+
+    color:#333;
+
+}
+
+input,select{
+
+    padding:12px;
+
+    border-radius:10px;
+
+    border:1px solid #ccc;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+input:focus,select:focus{
+
+    border-color:#2196f3;
+
+    outline:none;
+
+    box-shadow:0 0 10px rgba(33,150,243,.3);
+
+}
+
+.btn{
+
+    width:220px;
+
+    margin:35px auto;
+
+    display:block;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:50px;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    color:white;
+
+    background:linear-gradient(90deg,#1565c0,#42a5f5);
+
+    transition:.3s;
+
+    font-weight:bold;
+
+}
+
+.btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 8px 18px rgba(0,0,0,.25);
+
+}
+
+.result{
+
+    margin-top:20px;
+
+    text-align:center;
+
+    padding:25px;
+
+    border-radius:12px;
+
+    background:#f5f7fb;
+
+    display:none;
+
+}
+
+.result h2{
+
+    color:#0b4d91;
+
+}
+
+.result p{
+
+    margin-top:10px;
+
+    font-size:20px;
+
+}
+
+.loader{
+
+    display:none;
+
+    text-align:center;
+
+    color:#1565c0;
+
+    font-size:18px;
+
+}
+
+@media(max-width:1200px){
+
+.form-grid{
+
+grid-template-columns:repeat(3,1fr);
+
+}
+
+}
+
+@media(max-width:768px){
+
+.form-grid{
+
+grid-template-columns:repeat(2,1fr);
+
+}
+
+}
+
+@media(max-width:500px){
+
+.form-grid{
+
+grid-template-columns:1fr;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Adult Income Prediction</h1>
+
+<p class="subtitle">
+Predict whether annual income is greater than $50K using Machine Learning
+</p>
+
+<form id="predictionForm">
+
+<div class="form-grid">
+
+<div class="form-group">
+<label>Age</label>
+<input type="number" id="age" required>
+</div>
+
+<div class="form-group">
+<label>Workclass</label>
+<select id="workclass">
+
+<option>Private</option>
+<option>Self-emp-not-inc</option>
+<option>Local-gov</option>
+<option>?</option>
+<option>State-gov</option>
+<option>Self-emp-inc</option>
+<option>Federal-gov</option>
+<option>Without-pay</option>
+<option>Never-worked</option>
+
+</select>
+</div>
+
+<div class="form-group">
+<label>Fnlwgt</label>
+<input type="number" id="fnlwgt" required>
+</div>
+
+<div class="form-group">
+<label>Education Number</label>
+<input type="number" id="education_num" required>
+</div>
+
+<div class="form-group">
+<label>Occupation</label>
+
+<select id="occupation">
+
+<option>Prof-specialty</option>
+<option>Craft-repair</option>
+<option>Exec-managerial</option>
+<option>Adm-clerical</option>
+<option>Sales</option>
+<option>Other-service</option>
+<option>Machine-op-inspct</option>
+<option>?</option>
+<option>Transport-moving</option>
+<option>Handlers-cleaners</option>
+<option>Farming-fishing</option>
+<option>Tech-support</option>
+<option>Protective-serv</option>
+<option>Priv-house-serv</option>
+<option>Armed-Forces</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Race</label>
+
+<select id="race">
+
+<option>White</option>
+<option>Black</option>
+<option>Asian-Pac-Islander</option>
+<option>Amer-Indian-Eskimo</option>
+<option>Other</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Sex</label>
+
+<select id="sex">
+
+<option>Male</option>
+<option>Female</option>
+
+</select>
+
+</div>
+
+<div class="form-group">
+<label>Capital Gain</label>
+<input type="number" id="capital_gain" required>
+</div>
+
+<div class="form-group">
+<label>Capital Loss</label>
+<input type="number" id="capital_loss" required>
+</div>
+
+<div class="form-group">
+<label>Hours / Week</label>
+<input type="number" id="hours_per_week" required>
+</div>
+
+</div>
+
+<button class="btn" type="submit">
+
+Predict Income
+
+</button>
+
+</form>
+
+<div class="loader" id="loader">
+
+Predicting...
+
+</div>
+
+<div class="result" id="result">
+
+<h2>Prediction Result</h2>
+
+<p id="predictionText"></p>
+
+<p id="confidenceText"></p>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("predictionForm").addEventListener("submit",async function(e){
+
+e.preventDefault();
+
+document.getElementById("loader").style.display="block";
+document.getElementById("result").style.display="none";
+
+const payload={
+
+age:parseInt(document.getElementById("age").value),
+
+workclass:document.getElementById("workclass").value,
+
+fnlwgt:parseFloat(document.getElementById("fnlwgt").value),
+
+education_num:parseInt(document.getElementById("education_num").value),
+
+occupation:document.getElementById("occupation").value,
+
+race:document.getElementById("race").value,
+
+sex:document.getElementById("sex").value,
+
+capital_gain:parseFloat(document.getElementById("capital_gain").value),
+
+capital_loss:parseFloat(document.getElementById("capital_loss").value),
+
+hours_per_week:parseFloat(document.getElementById("hours_per_week").value)
+
+};
+
+try{
+
+const response=await fetch("/predict",{
+
+method:"POST",
+
+headers:{
+
+"Content-Type":"application/json"
+
+},
+
+body:JSON.stringify(payload)
+
+});
+
+const data=await response.json();
+
+document.getElementById("loader").style.display="none";
+
+document.getElementById("result").style.display="block";
+
+document.getElementById("predictionText").innerHTML=
+"<b>Prediction :</b> "+data.label;
+
+document.getElementById("confidenceText").innerHTML=
+"<b>Confidence :</b> "+(data.confidence*100).toFixed(2)+" %";
+
+}
+
+catch(error){
+
+document.getElementById("loader").style.display="none";
+
+alert("Prediction failed.");
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
